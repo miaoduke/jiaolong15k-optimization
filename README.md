@@ -1,5 +1,15 @@
 # 蛟龙15K (Ryzen 7 7435H + RTX 4060) 电源与风扇控制 · 逆向与自制控制台
 
+> **English (top-level overview)** — The primary documentation of this repo is written in **Simplified Chinese**. This short section summarizes what the project is and the key caveats before you dig in.
+
+**Jiaolong 15K (Mechanical Revolution) — power & fan control.** This is a hobby project that reverse-engineers the official "gaming console" software of the Mechrevo Jiaolong 15K (AMD Ryzen 7 7435H, Zen3+, 35W; RTX 4060 Laptop; Uniwill `GM5BG0E` motherboard, no iGPU). It documents the MQTT protocol, the EC (Embedded Controller) register map, and builds a self-made replacement console (Python on Windows, GTK on Linux) that reads sensors and writes fan curves / power limits.
+
+**Please note before using anything here:**
+> - This is an **unofficial reverse-engineering study** — it is **not affiliated with, or endorsed by, Mechrevo or Uniwill**.
+> - It **directly reads and writes EC and SMU registers**. A wrong value can destabilize the system or damage hardware. **Use at your own risk.**
+> - The repo ships **conclusions, register maps, protocol specs and methodologies only** — it deliberately does **not** include OEM binaries, decompiled/dump artifacts, credentials, or personal machine data. Raw capture/payload files and credential-extraction scripts were moved out of the public repo.
+> - Superseded conclusions are **kept and annotated, never deleted**; trust the latest module version and the README "known issues" section.
+
 > **机型**：机械革命 蛟龙15K / AMD Ryzen 7 **7435H（Zen3+，35W）** + RTX 4060 Laptop
 > **主板**：Uniwill **GM5BG0E** / ProjectID=16 / **无 iGPU（dGPU only）**
 > **系统**：Windows 11 Pro 26200 + Linux Mint 22.3 双系统
