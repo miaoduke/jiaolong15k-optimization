@@ -128,6 +128,29 @@
 
 ---
 
+## 🪟🐧 双系统能力对比（Windows vs Linux）
+
+> 两台系统都**直接读写 EC / SMU 寄存器**（都走 `ryzenadj` + EC 端口/ACPI），因此**底层能力几乎一致**；差异主要在**驱动依赖、自启机制、GUI 生态**。下表按「功能」对齐，标记各自可行性。均已实测。
+
+| 功能 | Windows | Linux | 说明 |
+|------|:-------:|:-----:|------|
+| CPU 降压 | ⛔ | ⛔ | SMU 固件锁死，`ryzenadj` 三通道均 rejected，双系统一致 |
+| GPU 降压 | ✅ 手动 | ⚠️ 受限 | Windows：MSI Afterburner VF 曲线；Linux：仅 vBIOS 功耗墙 115W 锁死，无等效 Afterburner |
+| SMU 功耗墙 (STAPM/Fast/Slow/Tctl) | ✅ | ✅ | 两平台 `ryzenadj` 均可写；默认 80W/100W/99°C |
+| 风扇曲线 (16 点) | ✅ | ✅ | Windows 走官方 MQTT `SET_FAN_SPEED_CURVE_SETTING`；Linux 直接写 EC |
+| 风扇 duty / 温度读取 | ✅ | ✅ | 同为 EC 寄存器 (`0x43E`/`0x44C`/`0x461`/`0x469`) |
+| 键盘背光 (三档) | ✅ | ✅ | EC `0x78C` bits 5-7，两平台均可写 |
+| 充电阈值 | ⚠️ | ⚠️ | 固件不实现，软件层写持久但硬件不生效（都证伪），双系统一致 |
+| 屏幕刷新率切换 (165Hz/60Hz) | ✅ | — | Windows：`mr_powersaver` 自动 AC/DC 切换；Linux 无此现成方案 |
+| 电源计划 / AC-DC 场景自动切换 | ✅ | ⚠️ 手动 | Windows：`mr_daemon`+`mr_powersaver` 全自动；Linux：shell 脚本手动/手动触发 |
+| 官方协议 (MQTT/UDP 场景) | ✅ | 不适用 | Windows 现役控制台完整实现；Linux 直接用 EC，不经 MQTT |
+| GUI 控制台 | ✅ 双 GUI | ⚠️ 简易 | Windows：`mr_gui_v6`/`v6qt`；Linux：`jcc_console` GTK |
+| 驱动依赖 | 需 `UWACPIDriver.sys`/WinRing0 | 免内核驱动 | Linux 用端口 I/O/`sysfs`，无需 Windows 专属驱动；但需 root |
+
+> **结论**：除「GPU 降压(Linux 受限)」「刷新率/电源计划自动化(仅 Win)」外，**核心 EC/SMU 能力两平台都能实现**。Windows 胜在应用层自动化与 GUI，Linux 胜在免驱动与纯净性。详见各 `02_代码_Windows/` 与 `03_代码_Linux/`。
+
+---
+
 ## 🖥️ Windows 侧：自制控制台
 
 `02_代码_Windows/现役_v6.0/` 为当前工作区。
@@ -208,8 +231,8 @@ mr_gui_v6.py / mr_gui_v6qt.py   双 GUI
 - [THIRDPARTY.md](THIRDPARTY.md) — 第三方组件与许可清单
 - [.github/FUNDING.yml](.github/FUNDING.yml) — 捐赠/Sponsor 占位模板（默认全留空，仓库公开且你决定开放赞助后再启用）
 
-> 💡 关于 README 底部的捐赠二维码：当前为**占位**，未指向任何真实收款渠道。若打算公开此仓库并接受捐赠，建议使用爱发电/支付宝官方链接并配合 FUNDING.yml 的 `custom` 字段，避免直接贴个人收款码引发风控。**关闭捐赠**同样是合规选项——本工具为个人逆向研究，不开放赞助也完全成立。
-```
+> 📌 关于下方捐赠二维码：二维码**已指向作者个人微信/支付宝收款码**（非官方开源赞助渠道）。
+> ⚠️ **合规与风控提示**：GitHub/微信/支付宝官方推荐的开源捐赠方式是 **GitHub Sponsors / 爱发电(Afdian)** 等平台（见 [.github/FUNDING.yml](.github/FUNDING.yml) 的说明）。个人收款码用于公开赞助**存在平台风控（冻卡/封号）与资金合规风险**；此二维码是整理者的主动选择，仅对自愿信任该渠道的用户开放。若不希望暴露个人渠道，可随时移除本段与二维码，改用官方链接。
 
 ## 📄 许可
 
