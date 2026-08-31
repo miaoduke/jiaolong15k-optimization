@@ -78,9 +78,8 @@ sudo systemctl restart acpid
 - `README.md` — 本文件
 - `脚本/fix-keyboard.sh` — DSDT 修复部署脚本
 - `脚本/install-fn-fix.sh` — Fn 键 acpid 规则安装脚本
-- `DSDT文件/dsdt_修改版.dsl` — 修改后的 DSDT 源码
-- `DSDT文件/dsdt_原始版.dsl` — BIOS 原始 DSDT 源码
-- `DSDT文件/dsdt_原始二进制.dat` — BIOS 原始 DSDT 二进制
+
+> 说明：本仓库仅公开修复**方法论与部署脚本**。原始 DSDT 二进制（`dsdt.dat`）与修改版源码（`dsdt_*.dsl`）属 OEM/BIOS 专有内容，**不随本仓库分发**；修复过程按 `00_键盘修复报告_20260818.md` 从本机 `/sys/firmware/acpi/tables/DSDT` 提取后自行比对即可。
 
 ## 参考
 
