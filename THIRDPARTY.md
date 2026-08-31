@@ -10,6 +10,8 @@
 | `readjustService.ps1` | Falco（readjust 工具派生） | **LGPL**（具体版本以其源文件头为准） | 功耗保持脚本 | 仅在归档/说明中提及，**现役已停用** |
 | 官方「电竞控制台」反编译产物（字符串 dump / UI 译文 / OEM 注册表快照） | 机械革命/Uniwill 原厂 | **专有·非公开**（厂商保留版权） | 逆向研究参照 | **不随公开仓发布**；个人使用用途，未获授权请勿再分发 |
 
+> 🔄 **2026-08-31 公开仓库审计清理**：此前随库的第三方**二进制**（`ryzenadj-win64.zip`、`ryzenadj.exe`、`libryzenadj.dll`、`WinRing0x64.dll`、`inpoutx64.dll`）已**全部从公开仓库及其全部历史提交中移除**，不再随库分发。如需使用，请从各上游官方仓库**自行获取/编译**。上表与其各自许可信息仍保留，作为评估与合规参考。
+
 ## 许可依据（核对日期 2026-08-31）
 - `ryzenadj`：LGPL-3.0（上游源码 SPDX 头、[Arch AUR 元数据](https://aur.archlinux.org/packages/ryzenadj)、公开使用手册）
 - `WinRing0`：Modified BSD（[原 OpenLibSys 声明](https://www.freefixer.com/library/file/winring0x64.sys-274804)、[winring0_1_3_0](https://github.com/5455945/WinRing0_1_3_0)）
