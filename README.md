@@ -69,6 +69,36 @@
 
 ## 🚀 快速导航
 
+> **Quick navigation (EN)** — the full tables below are in Chinese; this is the English summary. All results are from physical-machine testing.
+
+**What this machine can / cannot do:** see `00_结论_已确证/全量清单/` (Windows 165 items / Linux 54 / merged 124).
+**Current runtime state snapshot:** `00_结论_已确证/本机生态当前状态_20260828.md`.
+
+**Key verified conclusions (EN summary):**
+
+| Topic | Result |
+|------|--------|
+| CPU undervolt | ⛔ **locked by SMU firmware** (`ryzenadj` rejected on all three channels, identical on both OSes) |
+| GPU undervolt | only via MSI Afterburner manual VF curve; vBIOS power cap locked at 115 W |
+| Charge limit | ⚠️ **writes persist & read back consistently on Windows, but the firmware does not enforce it** (still charges to 100% in practice). Threshold regs `0x7B9`/`0x7D0` read back the *threshold*, not the SoC |
+| SMU power limits | ✅ `stapm` / `fast-limit` / `slow-limit` / `tctl-temp` writable; defaults STAPM 80 W / FAST 100 W / Tctl 99°C |
+| Fan | ✅ official MQTT `SET_FAN_SPEED_CURVE_SETTING` writes a 16-point curve (firmware-enforced) |
+| Keyboard backlight | ✅ 3 levels, EC `0x78C` bits 5–7 |
+
+**Key EC registers (EN; full map in `00_结论_已确证/Windows侧交叉对照_EC寄存器_20260823.md`):**
+
+| Addr | Meaning |
+|------|---------|
+| `0x43E` | CPU temperature |
+| `0x44C` | GPU temperature (`0x44F` is **deprecated**; older docs still referencing it are out of sync) |
+| `0x461` / `0x469` | fan duty |
+| `0x751` | fan control |
+| `0x7B9` / `0x7D0` | charge thresholds (read back = threshold, not SoC) |
+| `0x7A6` | ⚠️ **arbitrated on hardware (2026-08-30): writable flag bit, NOT a power sensor.** Writing `bit6` (0x40) succeeds and reads back the written value, then reverts; during a 2.5 s CPU-full-load run (GPU power 2.50→2.91 W) `0x7A6` stayed at 9 with no response. No load response + writable ⇒ not a "live power W" register; using it as touchpad `bit6` in `mr_gui_v6` is legitimate. The old "live power" claim is retracted |
+| `0x7A8` / `0x7A9` | ⛔ deprecated (early wrong addresses) |
+
+详细中文表格见下方「重点结论」与「关键 EC 寄存器」。
+
 **想了解这台机器能做什么、不能做什么** → `00_结论_已确证/全量清单/`（Windows 165 项 / Linux 54 项 / 合并 124 项）
 
 **想知道当前运行状态** → `00_结论_已确证/本机生态当前状态_20260828.md`
