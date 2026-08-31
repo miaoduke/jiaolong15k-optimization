@@ -231,9 +231,6 @@ mr_gui_v6.py / mr_gui_v6qt.py   双 GUI
 - [THIRDPARTY.md](THIRDPARTY.md) — 第三方组件与许可清单
 - [.github/FUNDING.yml](.github/FUNDING.yml) — 捐赠/Sponsor 占位模板（默认全留空，仓库公开且你决定开放赞助后再启用）
 
-> 📌 关于下方捐赠二维码：二维码**已指向作者个人微信/支付宝收款码**（非官方开源赞助渠道）。
-> ⚠️ **合规与风控提示**：GitHub/微信/支付宝官方推荐的开源捐赠方式是 **GitHub Sponsors / 爱发电(Afdian)** 等平台（见 [.github/FUNDING.yml](.github/FUNDING.yml) 的说明）。个人收款码用于公开赞助**存在平台风控（冻卡/封号）与资金合规风险**；此二维码是整理者的主动选择，仅对自愿信任该渠道的用户开放。若不希望暴露个人渠道，可随时移除本段与二维码，改用官方链接。
-
 ## 📄 许可
 
 本项目以 **MIT License** 授权（见 [LICENSE](LICENSE)），版权归 **段雪健 (Duan Xuejian)**。本项目引用的第三方组件（**ryzenadj = LGPL-3.0、WinRing0 = Modified BSD、inpoutx64.dll = Freeware、readjustService = LGPL** 等）以各自独立许可**并行分发**，清单与出处见 [THIRDPARTY.md](THIRDPARTY.md)。
