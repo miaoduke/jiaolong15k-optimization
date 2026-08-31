@@ -235,6 +235,8 @@ mr_gui_v6.py / mr_gui_v6qt.py   双 GUI
 
 ## 🔒 未公开内容（重要）
 
+> **English (what's excluded)** — The items below are **NOT** included in this public repo, for **copyright / licensing / privacy** reasons, and are kept in local `_private_不上传/` (excluded via `.gitignore`): OEM proprietary binaries (driver backups, ControlCenter3 installer, UWP-unpacked `GamingCenter3_Cross.dll`, …); decompiled artifacts (`GCUService.decompiled.cs`, `gcu_full.cs`, OEM string dumps, UI translations); some third-party binaries (e.g. LibreHardwareMonitor package, contains closed-source toolkit – not redistributable); firmware-derived files (original/modified `.dsl` DSDT, OEM factory fan table); personal machine data (battery report, OEM registry snapshot); runtime logs. **The repo ships only self-authored docs/code and methodology/test data frozen into conclusions; raw captures and credential-extraction steps are kept in `_private_不上传` and are not published.**
+
 以下内容因**版权 / 许可 / 隐私**原因**不包含在本仓库**，保留在本地 `_private_不上传/`（已被 `.gitignore` 排除）：
 
 | 类别 | 内容 | 原因 |
@@ -251,6 +253,8 @@ mr_gui_v6.py / mr_gui_v6qt.py   双 GUI
 ---
 
 ## 🔐 关于脱敏
+
+> **English (redaction)** — In this public version the following have been redacted: MQTT password salt → `<REDACTED_PWD_SALT>`; AES key → `<REDACTED_AES_KEY>`; the Windows/Linux username → `<USER>`. **This makes the local MQTT feature non-functional** (the credentials in `mr_console.py` / `mr_daemon.py` are runtime constants). To run locally, restore the matching files from `_private_不上传/_脱敏前备份_*/` (that directory is **not** committed). `mr_powersaver.py` has no MQTT dependency and is unaffected.
 
 公开版本已替换以下内容：
 
