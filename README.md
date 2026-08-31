@@ -151,6 +151,34 @@
 
 ---
 
+## 🚀 快速开始（Quick Start）
+
+> 想直接看到效果，按下面的最短路径跑起来；完整使用文档见各代码层目录内的 README/注释。
+
+**Windows（现役 v6.0，推荐先跑无 MQTT 依赖的最小件）**
+```bash
+# 前置：需已安装 UWACPIDriver.sys（原厂驱动）与 Python 3.10+（现役脚本使用标准库，无需额外 pip 依赖）
+cd 02_代码_Windows/现役_v6.0
+# 轻量 AC/DC 自动管理（刷新率+电源计划，无 MQTT 依赖，可立即试）
+pythonw mr_powersaver.py
+# 完整控制台（MQTT 场景切换 + GUI）。注意：公开版 MQTT 口令已脱敏为
+#   <REDACTED_PWD_SALT>，本机运行需先从 _private_不上传 取回真值（见「脱敏」节）
+python mr_gui_v6.py
+```
+
+**Linux（jcc_console_v2.3，需 root）**
+```bash
+cd 03_代码_Linux/jcc_console_v2.3
+sudo python3 jcc.py            # 控制中心入口（GTK）
+# 或仅用手动脚本（无需 GUI）：
+#   apply_mode.sh / deploy_three_mode.sh  三档(A/B/C)场景
+#   readjust.py               温度/功耗守护
+```
+
+> ⚠️ 首次使用前请务必读完顶部「免责声明」与下方「已知问题」。SMU/EC 写入不可逆地改变硬件行为，请务必备份原配置并从小幅参数开始。
+
+---
+
 ## 🖥️ Windows 侧：自制控制台
 
 `02_代码_Windows/现役_v6.0/` 为当前工作区。
@@ -170,6 +198,21 @@ mr_gui_v6.py / mr_gui_v6qt.py   双 GUI
 > 重装系统后用 `02_代码_Windows/恢复方案_系统重装/install.py` 一键恢复。
 
 > ⚠️ **readjustService.ps1（第三方持久化服务）— 保持停用**：`现役_v6.0/ryzenadj/readjustService.ps1` 是 Falco 开源的第三方 ryzenadj「监控保持」脚本（LGPL），其中 `46W/25W` 等为作者示例值，**与 smu_profile.json 档位无关**。它「盯守 fast_limit 防被改回」的职责与 mr_daemon 自带的 `plan_watcher` 重叠，两者同时启用会互相覆盖（readjust 会把 daemon 设好的档位强制改回示例值）。**不建议作为自启项启用**（2026-08-30 穷尽审计注记）。
+
+### ⚙️ SMU 功耗档位（`smu_profile.json` 实测值）
+
+当前四档配置（值单位为 mW；`ryzenadj` 写入时 `fast/slow/stapm` 换算为 W）：
+
+| 档位 | tctl-temp | stapm | fast-limit | slow-limit | 用途 |
+|------|:---------:|:-----:|:----------:|:----------:|------|
+| `office` | 85°C | 35 W | 65 W | 65 W | 办公/轻度，功耗最低 |
+| `custom` | 90°C | 55 W | 80 W | 80 W | 自定义均衡档 |
+| `gaming` | 95°C | 80 W | 100 W | 100 W | 游戏主力档（默认 play） |
+| `turbo` | 99°C | 80 W | 100 W | 100 W | 峰值，温度墙拉满至硬件上限 |
+
+> 四档 `fast` 均 ≤ 硬件 FAST 上限 100 W，可安全直接启用（越界仅存在于抓包中的厂商原生读数 `CPU_PL2=150`，属厂商口径问题，见「已知问题」）。
+
+---
 
 ## 🐧 Linux 侧
 
