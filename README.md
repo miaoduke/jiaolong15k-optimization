@@ -175,5 +175,8 @@ mr_gui_v6.py / mr_gui_v6qt.py   双 GUI
 
 本项目以 **MIT License** 授权（见 [LICENSE](LICENSE)），版权归 **段雪健 (Duan Xuejian)**。本项目引用的第三方组件（**ryzenadj = LGPL-3.0、WinRing0 = Modified BSD、inpoutx64.dll = Freeware、readjustService = LGPL** 等）以各自独立许可**并行分发**，清单与出处见 [THIRDPARTY.md](THIRDPARTY.md)。
 
-**打赏 / 赞助**：若本项目对你有帮助，欢迎自愿支持作者。打赏不改变 MIT 的免费许可性质。对外公开分发时，可将收款二维码图片置于下方作为自愿赞助入口（二维码属个人收款信息，仅在确定公开且愿意暴露时插入；未公开前请保持留空）：
-> _图占位：收款二维码（自愿赞助入口）_
+**打赏 / 赞助**：若本项目对你有帮助，欢迎自愿支持作者。打赏不改变 MIT 的免费许可性质。以下是自愿赞助入口：
+
+| 微信 (WeChat) | 支付宝 (Alipay) |
+|------|------|
+| ![微信收款码](assets/donate_wechat.jpg) | ![支付宝收款码](assets/donate_alipay.jpg) |
