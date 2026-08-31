@@ -1,0 +1,28 @@
+﻿{
+    "binding":  {
+                    "ac":  "游戏",
+                    "bat":  "办公"
+                },
+    "profiles":  {
+                     "游戏":  {
+                                "fan":  "perf",
+                                "rgb":  [
+                                            50,
+                                            0,
+                                            0
+                                        ],
+                                "charge":  80,
+                                "scheme":  "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"
+                            },
+                     "办公":  {
+                                "fan":  "quiet",
+                                "rgb":  [
+                                            0,
+                                            20,
+                                            0
+                                        ],
+                                "charge":  80,
+                                "scheme":  "381b4222-f694-41f0-9685-ff5bb260df2e"
+                            }
+                 }
+}

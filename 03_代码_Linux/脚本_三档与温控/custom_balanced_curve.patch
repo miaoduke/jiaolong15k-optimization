@@ -1,0 +1,39 @@
+--- /tmp/opencode/original_platform_profile.c	2026-08-20 12:12:57.771365729 +0800
++++ /usr/src/uniwill-laptop-1.0/uniwill-acpi.c	2026-08-20 11:21:57.898005814 +0800
+@@ -1453,6 +1453,25 @@
+ 	return -ETIMEDOUT;
+ }
+ 
++/*
++ * Custom balanced fan curve (GM5BG0E): middle ground between performance
++ * (CPU cap 200 / GPU cap 180) and quiet (CPU cap 110 / GPU cap 90).
++ * Temp points match the factory tables; only the top speeds are capped
++ * at 75% (CPU 150 / GPU 135) to give the balanced profile real meaning.
++ */
++static const struct uniwill_fan_tables custom_standard_tables = {
++	.cpu = {
++		.upper_temp = { 53, 57, 61, 65, 69, 73, 77, 81, 85, 87, 255, 255, 255, 255, 255, 255 },
++		.lower_temp = { 0, 48, 50, 60, 64, 68, 72, 76, 80, 84, 86, 255, 255, 255, 255, 255 },
++		.fan_speed  = { 0, 60, 60, 70, 90, 96, 100, 120, 150, 150, 150, 150, 150, 150, 150, 150 },
++	},
++	.gpu = {
++		.upper_temp = { 50, 50, 53, 56, 58, 60, 62, 65, 68, 70, 255, 255, 255, 255, 255, 255 },
++		.lower_temp = { 0, 48, 48, 52, 55, 57, 59, 60, 64, 67, 255, 255, 255, 255, 255, 255 },
++		.fan_speed  = { 0, 0, 60, 70, 70, 76, 80, 100, 135, 135, 135, 135, 135, 135, 135, 135 },
++	},
++};
++
+ static int uniwill_fan_table_init(struct uniwill_data *data)
+ {
+ 	int ret;
+@@ -1470,6 +1489,10 @@
+ 	if (ret < 0)
+ 		return ret;
+ 
++	/* GM5BG0E: override the factory balanced table (= performance) with a
++	 * real middle curve, otherwise balanced would duplicate performance. */
++	data->standard_tables = custom_standard_tables;
++
+ 	/* Signal the EC to reload the fan tables */
+ 	return regmap_write_bits(data->regmap, EC_ADDR_AP_OEM_6, ENABLE_UNIVERSAL_FAN_CTRL,
+ 				 ENABLE_UNIVERSAL_FAN_CTRL);

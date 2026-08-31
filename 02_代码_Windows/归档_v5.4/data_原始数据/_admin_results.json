@@ -1,0 +1,49 @@
+{
+  "admin": true,
+  "ec_0x7C1": null,
+  "ec_0x7C2": null,
+  "charge_0x7B9": null,
+  "hags": {
+    "orig": null,
+    "after_on": 2,
+    "write_ok": true,
+    "restored_to": "<deleted=原未设置>"
+  },
+  "wifi_adapters": [
+    {
+      "index": "0001",
+      "desc": "Intel(R) Wi-Fi 6 AX200 160MHz",
+      "band": 0
+    }
+  ],
+  "wifi_band": {
+    "idx": "0001",
+    "orig": 0,
+    "after": 2,
+    "ok": true,
+    "restored": 0
+  },
+  "e1_arbitration": {
+    "before": {
+      "current_w": 115.0,
+      "default_w": 115.0,
+      "min_w": 5.0,
+      "max_w": 140.0
+    },
+    "set140_ok": false,
+    "detail": "请求=140W 回读current=115.0 max=140.0 (驱动拒绝则current不变)",
+    "after140": {
+      "current_w": 115.0,
+      "default_w": 115.0,
+      "min_w": 5.0,
+      "max_w": 140.0
+    },
+    "restore115_ok": true,
+    "final": {
+      "current_w": 115.0,
+      "default_w": 115.0,
+      "min_w": 5.0,
+      "max_w": 140.0
+    }
+  }
+}

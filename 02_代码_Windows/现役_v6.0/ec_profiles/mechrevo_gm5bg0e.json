@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "model": "MECHREVO Jiaolong15K GM5BG0E",
+  "platform": "AMD Ryzen 7 7435H + RTX 4060 Laptop",
+  "date": "2026-08-26",
+  "source": "self-forensics + roj234 cross-validation",
+  "registers": {
+    "cpu_temp": {
+      "addr": "0x43E",
+      "note": "活体·µs级"
+    },
+    "gpu_temp": {
+      "addr": "0x44C",
+      "note": "旧0x44F死"
+    },
+    "fan1_duty": {
+      "addr": "0x75B",
+      "mirror": "0x461",
+      "encoding": "raw/2=percent",
+      "write": "verified-noop; overwritten-by-bridge-unless-manual"
+    },
+    "fan2_duty": {
+      "addr": "0x75C",
+      "encoding": "raw/2"
+    },
+    "fan1_rpm": {
+      "addr": "0x464:0x465",
+      "encoding": "hi<<8|lo"
+    },
+    "fan2_rpm": {
+      "addr": "0x46C:0x46B",
+      "note": "待本机复核"
+    },
+    "charge_start": {
+      "addr": "0x7A8",
+      "gate": "0x742 bit4"
+    },
+    "charge_stop": {
+      "addr": "0x7A9"
+    },
+    "charge_limit_alt": {
+      "addr": "0x7B9",
+      "note": "条件性镜像(离电0/通电=start)"
+    },
+    "pl1_w": {
+      "addr": "0x783",
+      "write": "VERIFIED-HELD(80→81 held 5s)"
+    },
+    "pl2_w": {
+      "addr": "0x784"
+    },
+    "pl4_w": {
+      "addr": "0x785"
+    },
+    "kb_backlight": {
+      "addr": "0x78C",
+      "bits": "5-7=level0-2, bit4 forced by legacy writer",
+      "write": "VERIFIED-visible"
+    },
+    "touchpad": {
+      "addr": "0x7A6",
+      "bits": "bit6=toggle, bit3=led",
+      "noop": "pass"
+    },
+    "adapter_watt": {
+      "addr": "0x49F",
+      "encoding": "coded(10=?)"
+    },
+    "usb_charger": {
+      "addr": "0x767",
+      "bits": "bit4=on/off",
+      "conditional": "OFF态读None; ON态=16 (与0x7B9同族条件性行为)",
+      "channel": "MQTT Setting/Control {Action:USB_CHARGER_ON/OFF, ServCMD同}",
+      "write": "VERIFIED-20260826"
+    }
+  },
+  "dead_on_this_model": [
+    "0x74E fn-lock",
+    "0xF00 fan-curve-tables",
+    "0x44F old-gpu-temp"
+  ]
+}

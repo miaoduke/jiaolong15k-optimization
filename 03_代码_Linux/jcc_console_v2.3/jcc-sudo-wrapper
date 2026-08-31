@@ -1,0 +1,20 @@
+#!/bin/bash
+case "$1" in
+  set-profile) echo "$2" | tee /sys/firmware/acpi/platform_profile ;;
+  set-rainbow) echo "$2" | tee /sys/devices/platform/INOU0000:00/rainbow_animation ;;
+  set-breathing) echo "$2" | tee /sys/devices/platform/INOU0000:00/breathing_in_suspend ;;
+  set-fnlock) echo "$2" | tee /sys/devices/platform/INOU0000:00/fn_lock_toggle_enable ;;
+  set-super) echo "$2" | tee /sys/devices/platform/INOU0000:00/super_key_toggle_enable ;;
+  set-touchpad) echo "$2" | tee /sys/devices/platform/INOU0000:00/touchpad_toggle_enable ;;
+  set-epp) for i in $(seq 0 15); do echo "$2" > /sys/devices/system/cpu/cpu$i/cpufreq/energy_performance_preference 2>/dev/null; done ;;
+  set-maxfreq) for i in $(seq 0 15); do echo "$2" > /sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq 2>/dev/null; done ;;
+  set-boost) echo "$2" > /sys/devices/system/cpu/cpufreq/boost 2>/dev/null ;;
+  set-fanboost-ec)
+    if [ "$2" = "1" ]; then python3 /usr/local/bin/ec_tool.py w 751 40 >/dev/null
+    else python3 /usr/local/bin/ec_tool.py w 751 10 >/dev/null; fi ;;
+  get-fanboost-ec) python3 -c "import sys; sys.path.insert(0,\"/usr/local/bin\"); from ec_tool import read_ec; print(1 if read_ec(0x751)==0x40 else 0)" ;;
+  set-fandual) python3 /usr/local/bin/ec_tool.py w 751 $2 >/dev/null ;;
+  get-cpurap) cat /sys/class/powercap/intel-rapl:0/energy_uj ;;
+  get-cycles) python3 -c "import sys; sys.path.insert(0,\"/usr/local/bin\"); from ec_tool import read_ec; print(read_ec(0x4A6) + read_ec(0x4A7)*256)" ;;
+  *) exit 1 ;;
+esac

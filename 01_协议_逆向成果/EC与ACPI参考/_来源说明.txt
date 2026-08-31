@@ -1,0 +1,7 @@
+# EC 协议证据链 (归档自 C:\LHMtmp, 20260826)
+- GCUService.decompiled.cs: 官方GCU服务反编译, EC IOCTL/MQTT协议权威来源
+- gcu_full.cs: GCU完整反编译(含更多DLL)
+- uniwill-acpi.c: Linux内核uniwill-laptop ACPI驱动源码(充电寄存器真相)
+- uniwill_doc.html: kernel.org 内核文档(charge_types/阈值接口说明)
+- batrep.html: 电池报告网页存档
+- ryzenadj-win64.zip: ryzenadj原始包(项目内已解压至自制控制台v6\ryzenadj)

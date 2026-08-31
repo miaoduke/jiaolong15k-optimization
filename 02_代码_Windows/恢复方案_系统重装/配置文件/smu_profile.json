@@ -1,0 +1,26 @@
+{
+  "office": {
+    "tctl": 85,
+    "stapm": 35000,
+    "fast": 65000,
+    "slow": 65000
+  },
+  "gaming": {
+    "tctl": 95,
+    "stapm": 80000,
+    "fast": 100000,
+    "slow": 100000
+  },
+  "turbo": {
+    "tctl": 99,
+    "stapm": 80000,
+    "fast": 100000,
+    "slow": 100000
+  },
+  "custom": {
+    "tctl": 90,
+    "stapm": 55000,
+    "fast": 80000,
+    "slow": 80000
+  }
+}

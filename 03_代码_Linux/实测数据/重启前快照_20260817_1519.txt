@@ -1,0 +1,27 @@
+===== 重启前快照 2026-08-17 15:19 =====
+【会话事件】
+- 12:50 登录，会话环境正常
+- 14:29 cinnamon 崩溃（core dump），14:33 自动重启但丢失 XDG_RUNTIME_DIR
+- 15:17 确认：cinnamon/Edge 等 14:33 后启动的进程无 XDG_RUNTIME_DIR → 音频后端全挂
+
+【待重启后验证（按顺序）】
+1. XDG_RUNTIME_DIR 恢复：tr '\0' '\n' < /proc/$(pgrep -x cinnamon)/environ | grep XDG_RUNTIME_DIR
+2. Edge 播放视频有声音（音频问题应已修复）
+3. 外置音响测试（3.5mm，之前音量拉满后已有声）
+4. 内置扬声器测试音：aplay -D plughw:1,0 /tmp/opencode/test_tone.wav
+5. EC 风扇：满载测试（stress-ng --cpu 16 --timeout 6s + 观察 0x97/0x3E）+ 听风扇声音
+   - 命令：printf '<REDACTED_PASSWORD>' | sudo -S ec_probe -e dev_port read 0x97
+   - 若风扇恢复正常 → EC 状态异常假设成立
+   - 若仍不转 → 继续 Windows RW-Everything 对比方案
+
+【环境信息】
+- sudo 密码：<REDACTED_PASSWORD>
+- 数据盘手动挂载：sudo mount -t ntfs-3g /dev/nvme0n1p5 /media/<USER>/<DATA_PART_UUID>
+- EC 实验后已恢复原值：0x97=69, 0x94=0
+- 音频修复已保存：alsactl store（Headphone/Speaker/Master 100%）
+
+【关键工具/文件】
+- ec_monitor.py: /tmp/opencode/ec_monitor.py（EC 高频采样）
+- test_tone.wav: /tmp/opencode/test_tone.wav（1kHz 测试音）
+- 诊断用 Edge 调试实例：--user-data-dir=/tmp/opencode/edge-dbg
+- nbfc 0.5.3 已装（ec_probe 可用），nbfc 服务未启用（正确）

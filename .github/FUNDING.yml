@@ -1,0 +1,23 @@
+# =============================================================
+#  FUNDING.yml  —  捐赠赞助按钮配置（占位模板）
+#
+#  说明：
+#    - GitHub 会在仓库右下角按此文件渲染 Sponsor 按钮。
+#    - 本文件为占位模板，所有真实渠道一律留空。
+#      待仓库正式公开且你决定开放赞助后，再按需填写并删除本段说明。
+#    - 不支持/不期望的个人渠道请保持注释状态，避免生成空按钮。
+#
+#  支持字段：github / custom / community_bridge / issuehunt /
+#             ko_fi / liberapay / open_collective / otechie / patreon / tidelift
+# =============================================================
+
+# GitHub Sponsors 用户名（若有，填形如 "your-name"，否则留空）
+# github: [your-name, another-name]
+
+# Patreon 用户名
+# patreon: your-name
+
+# 爱发电 → 形如 "userId:用户ID"（可选项）
+# 备注：GitHub 官方对非 6 大 Sponsor 平台的渲染支持有限，
+#       国内电费/爱发电需经 custom 链接跳转，见下方。
+# custom: ["https://afdian.com/a/your-name"]

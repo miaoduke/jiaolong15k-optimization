@@ -1,0 +1,40 @@
+﻿section,item,action,detail,result
+powercfg,PERFEPP,写40,原=60 写后读=40 (ac=40:OK),PASS
+powercfg,PERFEPP,恢复,→60,PASS
+powercfg,PERFBOOSTMODE,写4,原=2 写后读=4 (ac=4:OK),PASS
+powercfg,PERFBOOSTMODE,恢复,→2,PASS
+powercfg,PROCTHROTTLEMAX,写99,原=100 写后读=99 (ac=99:OK),PASS
+powercfg,PROCTHROTTLEMAX,恢复,→100,PASS
+display,亮度WMI,写66,原=75 写后读=66 (亮度66%),PASS
+display,亮度WMI,恢复,→75,PASS
+display,刷新率,75→50Hz,"实切=50Hz (50Hz(ret=0, 原75Hz))",PASS
+display,刷新率,恢复,→75Hz,PASS
+registry,游戏模式,置1,原=0 现读=1,PASS
+registry,游戏模式,恢复,→0,PASS
+registry,GameDVR,置1,现读=1,PASS
+registry,GameDVR,恢复0,现读=0,PASS
+powercfg,节电计划创建,1f526995-7060,duplicatescheme成功,PASS
+powercfg,节电计划清理,delete,已删除测试计划,PASS
+E1,gpuwall_140,nvidia-smi -pl 140,请求=140W 回读current=115.0 max=140.0 (驱动拒绝则current不变),FAIL
+cli,power rates,smoke,"刷新率: [50, 59, 60, 75]",PASS
+cli,power gpuinfo,smoke,"{'temp': 42.0, 'power_w': 3.08, 'util_pct': 13.0, 'sm_mhz': 210.0, 'sm_max_mhz':",PASS
+cli,power epp,smoke,"EPP: {'ac': 60, 'dc': 60}",PASS
+cli,power gamemode,smoke,当前: 0 -> (只读),PASS
+mqtt_display,游戏画面模式,DISPLAY_GAMING_MODE→GAMING,回读=DISPLAY_GAMING_MODE,PASS
+mqtt_display,显示模式恢复,→DISPLAY_GAMING_MODE,回读=DISPLAY_GAMING_MODE,PASS
+mqtt_osd,OSD悬浮开,OSD_HIDDEN_OFF→ON,回读=OSD_HIDDEN_ON,PASS
+mqtt_osd,OSD还原,→OSD_HIDDEN_OFF,回读=OSD_HIDDEN_OFF,PASS
+mqtt_detail,自动关屏,None→15分,回读=None,FAIL
+mqtt_detail,GPU目标温度,87→85,回读=87,FAIL
+mqtt_detail,GPU目标温度恢复,→87,回读=87,PASS
+mqtt_fan,风扇强冷开,0→1,回读=1,PASS
+mqtt_fan,风扇强冷关,→0,回读=0,PASS
+mqtt_query,风扇曲线GET,GET_FAN_SPEED_CURVE_SETTING,FAN_TableName=M3T1,PASS
+mqtt_query,GetGraphicInfo,查询,1字段,PASS
+mqtt_query,GETSUPPORT,查询,0字段,FAIL
+mqtt_bat,电池状态GET,Report GET,Health=2 电量=100%,PASS
+mqtt_bat,HEALTHYMODE切换,2→2,档位未变或原值未知,PASS
+mqtt_bat,充电上限MQTT路径,skip,状态包无此字段(EC直写为唯一可靠通路),FAIL
+gui_logic,智能场景拔电,AC→DC,applied=['移动节能'],PASS
+gui_logic,智能场景插电,DC→AC,applied=['办公'],PASS
+gui_logic,场景键映射,12键,WIRE_KEY缺失=无,PASS

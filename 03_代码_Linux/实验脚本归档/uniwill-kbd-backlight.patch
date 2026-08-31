@@ -1,0 +1,293 @@
+--- /usr/src/uniwill-laptop-1.0/uniwill-acpi.c	2026-08-20 11:21:57.898005814 +0800
++++ /usr/src/uniwill-laptop-1.1/uniwill-acpi.c	2026-08-20 17:27:01.089648441 +0800
+@@ -178,6 +178,22 @@
+ #define MY_BATTERY			BIT(6)
+ 
+ #define EC_ADDR_TRIGGER			0x0767
++
++#define EC_ADDR_RGB_RED			0x0769
++#define EC_ADDR_RGB_GREEN		0x076A
++#define EC_ADDR_RGB_BLUE		0x076B
++
++#define EC_ADDR_KBD_STATUS		0x078C
++/* Unreliable on some models, use the device descriptor instead. */
++#define KBD_WHITE_ONLY			BIT(0)
++#define KBD_POWER_OFF			BIT(1)
++#define KBD_TURBO_LEVEL_MASK		GENMASK(3, 2)
++#define KBD_APPLY			BIT(4)
++#define KBD_BRIGHTNESS_MASK		GENMASK(7, 5)
++#define KBD_LED_MASK			(KBD_BRIGHTNESS_MASK | KBD_APPLY | KBD_POWER_OFF)
++#define RGB_APPLY_COLOR			BIT(5)
++#define KBD_LED_CHANNELS		3
++#define KBD_LED_MAX_INTENSITY		50
+ #define TRIGGER_SUPER_KEY_LOCK		BIT(0)
+ #define TRIGGER_LIGHTBAR		BIT(1)
+ #define TRIGGER_FAN_BOOST		BIT(2)
+@@ -332,6 +348,7 @@
+ #define UNIWILL_FEATURE_FAN_TABLE		BIT(6)
+ #define UNIWILL_FEATURE_POWER_MODE_LED		BIT(7)
+ #define UNIWILL_FEATURE_CUSTOM_MODE		BIT(8)
++#define UNIWILL_FEATURE_KEYBOARD_BACKLIGHT	BIT(9)
+ 
+ enum uniwill_fan_mode {
+ 	FAN_MODE_PERFORMANCE	= 1,
+@@ -365,6 +382,9 @@
+ 	struct mutex super_key_lock;	/* Protects the toggling of the super key lock state */
+ 	struct list_head batteries;
+ 	struct mutex led_lock;		/* Protects writes to the lightbar registers */
++	struct mutex kbd_rgb_led_lock;	/* Protects writes to the keyboard RGB registers */
++	struct led_classdev_mc kbd_led_mc_cdev;
++	struct mc_subled kbd_led_mc_subled_info[KBD_LED_CHANNELS];
+ 	struct led_classdev_mc led_mc_cdev;
+ 	struct mc_subled led_mc_subled_info[LED_CHANNELS];
+ 	struct mutex input_lock;	/* Protects input sequence during notify */
+@@ -434,11 +454,6 @@
+ 
+ 	/* Reported when the user wants to toggle the brightness of the keyboard */
+ 	{ KE_KEY,       UNIWILL_OSD_KBDILLUMTOGGLE,             { KEY_KBDILLUMTOGGLE }},
+-	{ KE_KEY,       UNIWILL_OSD_KB_LED_LEVEL0,              { KEY_KBDILLUMTOGGLE }},
+-	{ KE_KEY,       UNIWILL_OSD_KB_LED_LEVEL1,              { KEY_KBDILLUMTOGGLE }},
+-	{ KE_KEY,       UNIWILL_OSD_KB_LED_LEVEL2,              { KEY_KBDILLUMTOGGLE }},
+-	{ KE_KEY,       UNIWILL_OSD_KB_LED_LEVEL3,              { KEY_KBDILLUMTOGGLE }},
+-	{ KE_KEY,       UNIWILL_OSD_KB_LED_LEVEL4,              { KEY_KBDILLUMTOGGLE }},
+ 
+ 	/* FIXME: find out the exact meaning of those events */
+ 	{ KE_IGNORE,    UNIWILL_OSD_BAT_CHARGE_FULL_24_H,       { KEY_UNKNOWN }},
+@@ -539,6 +554,10 @@
+ 	case EC_ADDR_LIGHTBAR_AC_BLUE:
+ 	case EC_ADDR_BIOS_OEM:
+ 	case EC_ADDR_TRIGGER:
++	case EC_ADDR_RGB_RED:
++	case EC_ADDR_RGB_GREEN:
++	case EC_ADDR_RGB_BLUE:
++	case EC_ADDR_KBD_STATUS:
+ 	case EC_ADDR_OEM_4:
+ 	case EC_ADDR_POWER_MODE_LED:
+ 	case EC_ADDR_CHARGE_CTRL:
+@@ -578,6 +597,10 @@
+ 	case EC_ADDR_PWM_1:
+ 	case EC_ADDR_PWM_2:
+ 	case EC_ADDR_TRIGGER:
++	case EC_ADDR_RGB_RED:
++	case EC_ADDR_RGB_GREEN:
++	case EC_ADDR_RGB_BLUE:
++	case EC_ADDR_KBD_STATUS:
+ 	case EC_ADDR_SWITCH_STATUS:
+ 	case EC_ADDR_OEM_4:
+ 	case EC_ADDR_POWER_MODE_LED:
+@@ -607,6 +630,7 @@
+ 	case EC_ADDR_PWM_2:
+ 	case EC_ADDR_TRIGGER:
+ 	case EC_ADDR_SWITCH_STATUS:
++	case EC_ADDR_KBD_STATUS:
+ 	case EC_ADDR_CHARGE_CTRL:
+ 	case EC_ADDR_AP_OEM_6:
+ 		return true;
+@@ -1061,6 +1085,167 @@
+ 
+ #define LIGHTBAR_MASK	(LIGHTBAR_APP_EXISTS | LIGHTBAR_S0_OFF | LIGHTBAR_S3_OFF | LIGHTBAR_WELCOME)
+ 
++
++/* ===================== Keyboard backlight (ported from linux-next, GM5BG0E) ===================== */
++static int uniwill_kbd_led_write_brightness(struct uniwill_data *data, int brightness)
++{
++	/* KBD_POWER_OFF is always implicitly cleared */
++	unsigned int regval = FIELD_PREP(KBD_BRIGHTNESS_MASK, brightness) | KBD_APPLY;
++
++	/* We must ensure that the "apply" bit is always written */
++	return regmap_write_bits(data->regmap, EC_ADDR_KBD_STATUS, KBD_LED_MASK, regval);
++}
++
++static int uniwill_kbd_led_read_brightness(struct uniwill_data *data)
++{
++	unsigned int regval;
++	int ret;
++
++	ret = regmap_read(data->regmap, EC_ADDR_KBD_STATUS, &regval);
++	if (ret < 0)
++		return ret;
++
++	return min(FIELD_GET(KBD_BRIGHTNESS_MASK, regval), 4);
++}
++
++static const unsigned int uniwill_kbd_led_channel_to_reg[KBD_LED_CHANNELS] = {
++	EC_ADDR_RGB_RED,
++	EC_ADDR_RGB_GREEN,
++	EC_ADDR_RGB_BLUE,
++};
++
++/*
++ * GM5BG0E: brightness is deliberately NOT written to the EC here. The EC
++ * firmware handles Fn+F6/F7 brightness natively (hardware mode) and any
++ * write with KBD_APPLY switches it into software mode where Fn+F6/F7 stop
++ * working (no WMI OSD events on this machine). The brightness LED field is
++ * therefore read-only (mirrors the hardware value set by Fn+F6/F7).
++ */
++static int uniwill_kbd_led_mc_brightness_set(struct led_classdev *led_cdev,
++					     enum led_brightness brightness)
++{
++	struct led_classdev_mc *led_mc_cdev = lcdev_to_mccdev(led_cdev);
++	struct uniwill_data *data = container_of(led_mc_cdev, struct uniwill_data, kbd_led_mc_cdev);
++	unsigned int min_intensity = 0;
++	unsigned int regval;
++	int ret;
++
++	guard(mutex)(&data->kbd_rgb_led_lock);
++
++	/*
++	 * The EC interprets a RGB value of 0x000000 as a command to restore
++	 * the device-specfic default RGB value. Work around this by writing
++	 * a RGB value of 0x010101 (faint white) instead.
++	 */
++	if (data->kbd_led_mc_subled_info[0].intensity == 0 &&
++	    data->kbd_led_mc_subled_info[1].intensity == 0 &&
++	    data->kbd_led_mc_subled_info[2].intensity == 0)
++		min_intensity = 1;
++
++	for (int i = 0; i < KBD_LED_CHANNELS; i++) {
++		regval = max(data->kbd_led_mc_subled_info[i].intensity, min_intensity);
++		ret = regmap_write(data->regmap, uniwill_kbd_led_channel_to_reg[i], regval);
++		if (ret < 0)
++			return ret;
++	}
++
++	ret = regmap_write_bits(data->regmap, EC_ADDR_TRIGGER, RGB_APPLY_COLOR, RGB_APPLY_COLOR);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++static enum led_brightness uniwill_kbd_led_mc_brightness_get(struct led_classdev *led_cdev)
++{
++	struct led_classdev_mc *led_mc_cdev = lcdev_to_mccdev(led_cdev);
++	struct uniwill_data *data = container_of(led_mc_cdev, struct uniwill_data, kbd_led_mc_cdev);
++
++	return uniwill_kbd_led_read_brightness(data);
++}
++
++static int uniwill_kbd_led_init(struct uniwill_data *data)
++{
++	unsigned int color_indices[KBD_LED_CHANNELS] = {
++		LED_COLOR_ID_RED,
++		LED_COLOR_ID_GREEN,
++		LED_COLOR_ID_BLUE,
++	};
++	struct led_init_data init_data = {
++		.default_label = "multicolor:" LED_FUNCTION_KBD_BACKLIGHT,
++		.devicename = DRIVER_NAME,
++		.devname_mandatory = true,
++	};
++	bool intensity_all_zeros = true;
++	bool needs_trigger = false;
++	unsigned int regval;
++	int ret;
++
++		if (!(supported_features & UNIWILL_FEATURE_KEYBOARD_BACKLIGHT))
++		return 0;
++
++	for (int i = 0; i < KBD_LED_CHANNELS; i++) {
++		data->kbd_led_mc_subled_info[i].color_index = color_indices[i];
++
++		ret = regmap_read(data->regmap, uniwill_kbd_led_channel_to_reg[i], &regval);
++		if (ret < 0)
++			return ret;
++
++		/*
++		 * Make sure that the initial intensity value is not greater than
++		 * the maximum intensity.
++		 */
++		if (regval > KBD_LED_MAX_INTENSITY) {
++			regval = KBD_LED_MAX_INTENSITY;
++			ret = regmap_write(data->regmap, uniwill_kbd_led_channel_to_reg[i], regval);
++			if (ret < 0)
++				return ret;
++
++			needs_trigger = true;
++		}
++
++		if (regval)
++			intensity_all_zeros = false;
++
++		data->kbd_led_mc_subled_info[i].intensity = regval;
++		data->kbd_led_mc_subled_info[i].channel = i;
++	}
++
++	/* See uniwill_kbd_led_mc_brightness_set() for an explaination. */
++	if (intensity_all_zeros) {
++		for (int i = 0; i < KBD_LED_CHANNELS; i++) {
++			data->kbd_led_mc_subled_info[i].intensity = 1;
++			ret = regmap_write(data->regmap, uniwill_kbd_led_channel_to_reg[i], 1);
++			if (ret < 0)
++				return ret;
++		}
++
++		needs_trigger = true;
++	}
++
++	if (needs_trigger) {
++		ret = regmap_write_bits(data->regmap, EC_ADDR_TRIGGER, RGB_APPLY_COLOR,
++					RGB_APPLY_COLOR);
++		if (ret < 0)
++			return ret;
++	}
++
++	ret = devm_mutex_init(data->dev, &data->kbd_rgb_led_lock);
++	if (ret < 0)
++		return ret;
++
++	data->kbd_led_mc_cdev.led_cdev.max_brightness = 4;
++	data->kbd_led_mc_cdev.led_cdev.color = LED_COLOR_ID_MULTI;
++	data->kbd_led_mc_cdev.led_cdev.flags = LED_BRIGHT_HW_CHANGED | LED_REJECT_NAME_CONFLICT;
++	data->kbd_led_mc_cdev.led_cdev.brightness_set_blocking = uniwill_kbd_led_mc_brightness_set;
++	data->kbd_led_mc_cdev.led_cdev.brightness_get = uniwill_kbd_led_mc_brightness_get;
++	data->kbd_led_mc_cdev.subled_info = data->kbd_led_mc_subled_info;
++	data->kbd_led_mc_cdev.num_colors = KBD_LED_CHANNELS;
++
++	return devm_led_classdev_multicolor_register_ext(data->dev, &data->kbd_led_mc_cdev,
++							 &init_data);
++}
++
+ static int uniwill_led_init(struct uniwill_data *data)
+ {
+ 	struct led_init_data init_data = {
+@@ -1560,11 +1745,29 @@
+ 			dev_err(data->dev, "Failed to cycle platform profile: %d\n", ret);
+ 
+ 		return NOTIFY_OK;
++	case UNIWILL_OSD_KB_LED_LEVEL0:
++	case UNIWILL_OSD_KB_LED_LEVEL1:
++	case UNIWILL_OSD_KB_LED_LEVEL2:
++	case UNIWILL_OSD_KB_LED_LEVEL3:
++	case UNIWILL_OSD_KB_LED_LEVEL4:
++		/* Brightness level events: report actual hardware brightness
++		 * to the LED class. No key is injected (upstream behaviour). */
++		led_classdev_notify_brightness_hw_changed(&data->kbd_led_mc_cdev.led_cdev,
++							  uniwill_kbd_led_read_brightness(data));
++
++		return NOTIFY_OK;
+ 	default:
+ 		mutex_lock(&data->input_lock);
+ 		sparse_keymap_report_event(data->input_device, action, 1, true);
+ 		mutex_unlock(&data->input_lock);
+ 
++		/* GM5BG0E: Fn+F6/F7 brightness is handled by EC hardware, WMI
++		 * only reports the event. Sync actual brightness to LED class
++		 * so the desktop OSD shows accurate progress. */
++		if (action == UNIWILL_OSD_KBDILLUMDOWN || action == UNIWILL_OSD_KBDILLUMUP)
++			led_classdev_notify_brightness_hw_changed(&data->kbd_led_mc_cdev.led_cdev,
++								  uniwill_kbd_led_read_brightness(data));
++
+ 		return NOTIFY_OK;
+ 	}
+ }
+@@ -1667,6 +1870,9 @@
+ 		return ret;
+ 
+ 	ret = uniwill_led_init(data);
++	ret = uniwill_kbd_led_init(data);
++	if (ret < 0)
++		return ret;
+ 	if (ret < 0)
+ 		return ret;
+ 

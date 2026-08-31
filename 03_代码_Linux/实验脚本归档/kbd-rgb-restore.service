@@ -1,0 +1,10 @@
+[Unit]
+Description=Restore keyboard RGB color at boot
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/kbd-rgb-restore.sh
+
+[Install]
+WantedBy=multi-user.target

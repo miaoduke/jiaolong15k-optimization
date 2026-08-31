@@ -1,0 +1,27 @@
+[CAPTURE START]
+[14:11:29] Languages/Control : {"Action":"EnableTray"}
+[14:11:29] Keyboard/Status : {"solution":"EC","type":"SingleZone","brightNess":"4","powerStatus":"On","welcomeStatus":null,"welcomeDirectionStatus":"LeftRight","ACBrightness":"4","DCBrightness":"4","auroraStatus":false,"auroraExist":false,"SingleZonePowerSupport":true,"MonochromeIndex":"17","ManualIndex1":"1","ManualIndex2":"5","ManualIndex3":"9","ManualIndex4":"13","ManualIndex5":"21","ManualIndex6":"25","ManualInterval":"10
+[14:11:29] Settings/DeviceSwitchItemStatus : {"WIFIEnable":false,"BTEnable":false,"WebCamEnable":true,"TochpadEnable":true,"ScreenBrightness":50}
+[14:11:29] HidLightbar_Sync/Status : {"solution":null,"type":null,"brightNess":null,"powerStatus":null,"welcomeStatus":null,"welcomeDirectionStatus":null,"ACBrightness":null,"DCBrightness":null,"auroraStatus":false,"auroraExist":false,"SingleZonePowerSupport":false,"MonochromeIndex":null,"ManualIndex1":null,"ManualIndex2":null,"ManualIndex3":null,"ManualIndex4":null,"ManualIndex5":null,"ManualIndex6":null,"ManualInterval":null,"Breat
+[14:11:29] Customize/SupportInfo : {"CustomizeTarget":17,"ProjectID":0,"ServiceReady":1,"AcRecoverySwitchBiosSupport":0,"AcRecoverySwitchSupport":1,"ColorCalibrationSupport":1,"DGpuDirectConnectionSupport":0,"FanBoostBtnSupport":0,"IsAMDPlatform":1,"IsNvGpu":1,"LightbarSupport":0,"RGBLightbarSupport":0,"IsProjectIdCommercial":0,"IsProjectIdCommercialHAVE20DB":0,"FanSettingsSupport":1,"NumPadSupport":1,"OcSettingsSupport":1,"LiquidC
+[14:11:29] HidLightbar_Hinge/Status : {"solution":"UNKNOWN","type":"Normal","brightNess":null,"powerStatus":null,"welcomeStatus":null,"welcomeDirectionStatus":null,"ACBrightness":null,"DCBrightness":null,"auroraStatus":false,"auroraExist":false,"SingleZonePowerSupport":false,"MonochromeIndex":null,"ManualIndex1":null,"ManualIndex2":null,"ManualIndex3":null,"ManualIndex4":null,"ManualIndex5":null,"ManualIndex6":null,"ManualInterval":nu
+[14:11:29] HidLightbar_Logo/Status : {"solution":"UNKNOWN","type":"Normal","brightNess":null,"powerStatus":null,"welcomeStatus":null,"welcomeDirectionStatus":null}
+[14:12:08] BatteryProtection/Control : {"Action":"BALANCEDMODE"}
+[14:12:15] System/BatteryProtection : {"BatteryPercent":84,"BatteryTime":7454,"BatteryFullTime":-1}
+[14:12:15] BatteryProtection/Control : {"Action":"BALANCEDMODE"}
+[14:12:24] BatteryProtection/Control : {"Action":"HEALTHYMODE"}
+[14:12:36] BatteryProtection/Control : {"Action":"BALANCEDMODE"}
+[14:12:37] BatteryProtection/Control : {"Action":"PERFORMANCEDMODE"}
+[14:13:25] System/BatteryProtection : {"BatteryPercent":83,"BatteryTime":8344,"BatteryFullTime":-1}
+[14:13:25] BatteryProtection/Control : {"Action":"PERFORMANCEDMODE"}
+[14:14:35] System/BatteryProtection : {"BatteryPercent":82,"BatteryTime":7581,"BatteryFullTime":-1}
+[14:14:46] BatteryProtection/Control : {"Report": "GET"}
+[14:14:46] System/BatteryProtection : {"BatteryPowerStatus":0,"BatteryPercent":82,"BatteryTime":7581,"BatteryFullTime":-1,"HealthProtectionStatus":"0","TypeCAdaptorPrioritySwitch":"0","TypeCAdaptorPrioritySupport":false}
+[14:14:46] BatteryProtection/Control : {"Action": "HEALTHYMODE"}
+[14:15:06] BatteryProtection/Control : {"Action": "BALANCEDMODE"}
+[14:15:26] BatteryProtection/Control : {"Action": "PERFORMANCEDMODE"}
+[14:15:31] BatteryProtection/Control : {"Action":"HEALTHYMODE"}
+[14:15:35] System/Control : {"Action":"System_OFF"}
+[14:15:35] System/BatteryProtection : {"BatteryPercent":81,"BatteryTime":6232,"BatteryFullTime":-1}
+[14:15:35] BatteryProtection/Control : {"Action":"HEALTHYMODE"}
+[DONE]

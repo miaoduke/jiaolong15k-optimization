@@ -1,0 +1,8 @@
+===== 2026-08-17 14:24:30 | 换脂前_基线测试_前状态 =====
+--- 供电: AC / 电池: 100%
+--- 环境温度: acpitz-acpi-0
+--- CPU: governor=performance EPP=performance
+--- CPU温度: 55.625°C
+--- GPU: 46, 6.13 W, [N/A], 24 %
+--- 服务: TLP=inactive PPD=inactive nvidia-powerd=inactive
+--- 空闲功耗(RAPL 10s): 

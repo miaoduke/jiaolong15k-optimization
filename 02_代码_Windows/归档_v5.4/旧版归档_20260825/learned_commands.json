@@ -1,0 +1,250 @@
+{
+  "manual_45349": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45350": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45351": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45352": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45353": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45354": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45359": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45362": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45366": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45369": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45669": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45670": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45671": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45672": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45673": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45674": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45678": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45681": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45685": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45689": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45693": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45696": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45700": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45703": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45707": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45710": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_45714": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52213": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52216": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52220": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52223": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52226": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52229": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52234": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52242": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52246": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52254": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52259": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52266": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52271": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52279": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52283": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_52291": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56790": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56794": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56798": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56802": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56803": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56806": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56807": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56810": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56819": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56824": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56833": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56838": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56847": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56853": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56861": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56867": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56876": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56880": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  },
+  "manual_56889": {
+    "topic": "Fan/Control",
+    "payload": "{\"Action\":\"GETSTATUS\"}"
+  }
+}

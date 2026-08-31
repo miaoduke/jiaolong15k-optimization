@@ -1,0 +1,23 @@
+# ===== 不可公开: OEM 专有二进制 / 反编译产物 / 个资 =====
+_private_不上传/
+
+# ===== 运行时产物 =====
+*.log
+*.pyc
+__pycache__/
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# ===== 编辑器 / 系统 =====
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== 打包 =====
+*.pyz
+dist/
+build/
+*.egg-info/

@@ -1,0 +1,2 @@
+[daemon] mqtt ready
+[daemon] udp 13690 listening

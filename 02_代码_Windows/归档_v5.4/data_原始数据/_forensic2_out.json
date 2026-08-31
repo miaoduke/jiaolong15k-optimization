@@ -1,0 +1,84 @@
+{
+  "pl1_200_test": {
+    "orig": "80",
+    "samples": [
+      "200",
+      "restore=200",
+      "200",
+      "restore=200",
+      "200",
+      "restore=200"
+    ]
+  },
+  "acpitest": {
+    "AcpiTest_QULong": {
+      "methods": [
+        null
+      ],
+      "count": 0,
+      "inst": []
+    },
+    "AcpiTest_QSString": {
+      "methods": [
+        null
+      ],
+      "count": 0,
+      "inst": []
+    },
+    "AcpiTest_MPackage": {
+      "methods": [
+        null
+      ],
+      "count": 0,
+      "inst": []
+    },
+    "AcpiTest_MString": {
+      "methods": [
+        null
+      ],
+      "count": 0,
+      "inst": []
+    },
+    "AcpiTest_EventPackage": {
+      "methods": [
+        null
+      ],
+      "count": 0,
+      "inst": []
+    },
+    "AcpiTest_QSPackage": {
+      "methods": [
+        null
+      ],
+      "count": 0,
+      "inst": []
+    },
+    "AcpiTest_MULong": {
+      "methods": [
+        null
+      ],
+      "count": 0,
+      "inst": []
+    },
+    "AcpiTest_EventULong": {
+      "methods": [
+        null
+      ],
+      "count": 0,
+      "inst": []
+    },
+    "AcpiTest_EventString": {
+      "methods": [
+        null
+      ],
+      "count": 0,
+      "inst": []
+    }
+  },
+  "target_temp_office": {
+    "mode0": "",
+    "gt0": "87",
+    "gt_office_write83": "87",
+    "restored_mode": "gaming"
+  }
+}

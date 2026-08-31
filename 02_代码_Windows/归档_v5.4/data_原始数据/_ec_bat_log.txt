@@ -1,0 +1,73 @@
+[2026/08/25 周二 21:07:50.82] elevated run start 
+[1] instances: 10
+  ACPI\PNP0C14\1_0 -> t1=0 t2=0 live=False
+  ACPI\PNP0C14\1_1 -> t1=0 t2=0 live=False
+  ACPI\PNP0C14\1_2 -> t1=0 t2=0 live=False
+  ACPI\PNP0C14\1_3 -> t1=0 t2=0 live=False
+  ACPI\PNP0C14\1_4 -> t1=0 t2=0 live=False
+  ACPI\PNP0C14\1_5 -> t1=0 t2=0 live=False
+  ACPI\PNP0C14\1_6 -> t1=0 t2=0 live=False
+  ACPI\PNP0C14\1_7 -> t1=0 t2=0 live=False
+  ACPI\PNP0C14\1_8 -> t1=0 t2=0 live=False
+  ACPI\PNP0C14\1_9 -> t1=0 t2=0 live=False
+RESULT: no instance returned plausible temperature.
+[2026/08/25 周二 21:07:56.77] run finished 
+锘縶
+    "started":  "21:07:51",
+    "instances":  10,
+    "probe_ACPI\\PNP0C14\\1_0":  {
+                                     "t1":  0,
+                                     "t2":  0
+                                 },
+    "probe_ACPI\\PNP0C14\\1_1":  {
+                                     "t1":  0,
+                                     "t2":  0
+                                 },
+    "probe_ACPI\\PNP0C14\\1_2":  {
+                                     "t1":  0,
+                                     "t2":  0
+                                 },
+    "probe_ACPI\\PNP0C14\\1_3":  {
+                                     "t1":  0,
+                                     "t2":  0
+                                 },
+    "probe_ACPI\\PNP0C14\\1_4":  {
+                                     "t1":  0,
+                                     "t2":  0
+                                 },
+    "probe_ACPI\\PNP0C14\\1_5":  {
+                                     "t1":  0,
+                                     "t2":  0
+                                 },
+    "probe_ACPI\\PNP0C14\\1_6":  {
+                                     "t1":  0,
+                                     "t2":  0
+                                 },
+    "probe_ACPI\\PNP0C14\\1_7":  {
+                                     "t1":  0,
+                                     "t2":  0
+                                 },
+    "probe_ACPI\\PNP0C14\\1_8":  {
+                                     "t1":  0,
+                                     "t2":  0
+                                 },
+    "probe_ACPI\\PNP0C14\\1_9":  {
+                                     "t1":  0,
+                                     "t2":  0
+                                 },
+    "candidates":  [
+
+                   ],
+    "verdict":  "NO_LIVE_INSTANCE_ALL_ZERO"
+}
+[runner] cwd=C:\Users\<USER> ps1_exists=True
+[runner] rc=0
+stdout:
+[1/5] alt channels: thermal zone + battery classes
+[2/5] enumerating instances ...
+[3/5] variant matrix: 10 instances x 5 encodings x temp-reg ...
+    hits: 
+[4/5] no live encoding found. DONE.
+
+stderr:
+

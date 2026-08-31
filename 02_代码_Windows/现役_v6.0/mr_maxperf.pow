@@ -1,0 +1,25 @@
+(); MR-极限性能
+GUID= {a1b2c3d4-e5f6-7890-abcd-ef1234567890}
+name= MR-极限性能
+desc= 蛟龙15K极限性能模式
+
+[PCI Express]
+   Power Setting GUID: e1948c09-673e-47b8-8473-a21350243560
+     GUID: e1948c09-673e-47b8-8473-a21350243560 (链接状态电源管理)
+       Current Power State: 0
+       Maximum: 0
+       Minimum: 0
+
+[Processor power management]
+   Power Setting GUID: 75b0ae3f-bce0-45a7-8c89-c9611c25e100
+     GUID: 75b0ae3f-bce0-45a7-8c89-c9611c25e100 (最大处理器状态)
+       Current Power State: 100
+       Maximum: 100
+       Minimum: 0
+
+[System cooling policy]
+   Power Setting GUID: 94d676e8-fb05-44fa-950c-357b5350e648
+     GUID: 94d676e8-fb05-44fa-950c-357b5350e648 (系统散热策略)
+       Current Power State: 1
+       Maximum: 1
+       Minimum: 0

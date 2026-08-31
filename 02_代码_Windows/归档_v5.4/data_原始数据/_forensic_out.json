@@ -1,0 +1,180 @@
+{
+  "active_scheme": "鐢垫簮鏂规�� GUID: a1841308-3541-4fab-bc81-f71556f20b4a  (鑺傝兘)",
+  "epp_高性能": {
+    "ac": 25,
+    "dc": 80
+  },
+  "epp_平衡": {
+    "ac": 25,
+    "dc": 60
+  },
+  "wmi_acpi_classes": [
+    "AcpiTest_EventString",
+    "AcpiTest_EventULong",
+    "AcpiTest_EventPackage",
+    "ProcessorAcpiCsdDependency",
+    "AcpiGenAddr",
+    "AcpiTest_MString",
+    "AcpiTest_QSPackage",
+    "MSAcpiInfo",
+    "ProcessorAcpiCsd",
+    "ProcessorAcpiTsd",
+    "ProcessorAcpiCst",
+    "AcpiControlStatus",
+    "ProcessorAcpiXpss",
+    "ProcessorAcpiTssState",
+    "AMD_ACPI",
+    "ProcessorAcpiCstState",
+    "AcpiPct",
+    "TestTraceGuid",
+    "ACPITrace",
+    "ProcessorAcpiTsdDependency",
+    "AcpiTest_MPackage",
+    "ProcessorAcpiXpssState",
+    "AcpiTest_QSString",
+    "ProcessorAcpiTss",
+    "AcpiPssState",
+    "BcdDeviceLocateStringData",
+    "AcpiPss",
+    "AcpiTest_MULong",
+    "AcpiTest_QULong",
+    "MSParallel_DeviceBytesTransferred",
+    "MSAcpi",
+    "MSAcpi_ThermalZoneTemperature"
+  ],
+  "pnp0c14": [
+    "ACPI\\PNP0C14\\1 | OK",
+    "ACPI\\PNP0C14\\AOD | OK"
+  ],
+  "diffs": {
+    "GETSUPPORT": {
+      "new_topics": [
+        "Customize/Control",
+        "Customize/Info"
+      ],
+      "changed": []
+    },
+    "charge_set90": {
+      "new_topics": [],
+      "changed": [
+        "BatteryProtection/Control"
+      ]
+    },
+    "dynboost_camel": {
+      "new_topics": [],
+      "changed": [
+        "Fan/Status"
+      ]
+    },
+    "dynboost_UPPER": {
+      "new_topics": [],
+      "changed": [
+        "Fan/Status"
+      ]
+    },
+    "closetimer15": {
+      "new_topics": [
+        "Setting/Control",
+        "Setting/Status"
+      ],
+      "changed": [
+        "Fan/Control"
+      ]
+    },
+    "kblevel3": {
+      "new_topics": [
+        "Keyboard/Ctrl"
+      ],
+      "changed": [
+        "Keyboard/Status"
+      ]
+    }
+  },
+  "getsupport_reply_topic": "Customize/Control",
+  "getsupport_data_sample": "{'Action': 'GETSUPPORT'}",
+  "battery_baseline": {
+    "BatteryPowerStatus": 1,
+    "BatteryPercent": 100,
+    "BatteryTime": -1,
+    "BatteryFullTime": -1,
+    "HealthProtectionStatus": "2",
+    "TypeCAdaptorPrioritySwitch": "0",
+    "TypeCAdaptorPrioritySupport": false,
+    "BatteryAbnormal": "0"
+  },
+  "healthmode_matrix": {
+    "HealthType1": "2",
+    "HealthType3": "2",
+    "SetStatus1": "2",
+    "SetStatus3": "2",
+    "Detail3": "2"
+  },
+  "health_restored": "2",
+  "charge_mqtt_path": {
+    "before": null,
+    "keys_now": [
+      "BatteryAbnormal",
+      "BatteryFullTime",
+      "BatteryPercent",
+      "BatteryPowerStatus",
+      "BatteryTime",
+      "HealthProtectionStatus",
+      "TypeCAdaptorPrioritySupport",
+      "TypeCAdaptorPrioritySwitch"
+    ],
+    "ChargeMaximumLimit": null,
+    "any90": false
+  },
+  "dynboost_key_probe": {
+    "GPU_DynamicBoost": [
+      "25",
+      "15"
+    ]
+  },
+  "closetimer_echo": {},
+  "kb_level_echo": {
+    "Keyboard/Status/brightNess": "0",
+    "Keyboard/Status/ACBrightness": "0",
+    "Keyboard/Status/DCBrightness": "0",
+    "Keyboard/Status/light": null
+  },
+  "target_temp_oc_gated": {
+    "oc_before": "0",
+    "steps": [
+      [
+        "oc_on",
+        "1"
+      ],
+      [
+        "gt83",
+        "87"
+      ]
+    ]
+  },
+  "wall_down_test": {
+    "set100_ok": false,
+    "mid": {
+      "current_w": 115.0,
+      "default_w": 115.0,
+      "min_w": 5.0,
+      "max_w": 140.0
+    },
+    "detail": "请求=100W 回读current=115.0 max=140.0 (驱动拒绝则current不变)",
+    "final": {
+      "current_w": 115.0,
+      "default_w": 115.0,
+      "min_w": 5.0,
+      "max_w": 140.0
+    }
+  },
+  "stability": {
+    "ok": 30,
+    "total": 30,
+    "lat_ms": {
+      "min": 0,
+      "max": 2,
+      "avg": 0
+    },
+    "fails": []
+  }
+}

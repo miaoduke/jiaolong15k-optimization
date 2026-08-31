@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=蛟龙15K 控制中心
+Comment=Jiaolong Control Center (jcc.py)
+Exec=python3 /home/<USER>/桌面/jcc_console/jcc.py
+Terminal=false
+Type=Application
+Icon=applications-system
+Categories=System;Utility;
