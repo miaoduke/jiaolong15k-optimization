@@ -35,7 +35,11 @@ grep ' 1:' /proc/interrupts  # 按键后计数应增加
 
 **原理**：在内核 `drivers/acpi/resource.c` 的 `irq1_edge_low_force_override[]` 添加 GM5BG0E。
 
-**状态**：同平台 GM5HG0A 已进表，GM5BG0E 待提交。
+**状态（2026-08-31 如实记录）**：
+- 同平台 **GM5HG0A** 已进表并有公开 upstream 历史（见下方参考：Bug 219614 / Patchew / commit `be1e47be9eb4`），处理方式可完全复用。
+- 截至检索日，**`GM5BG0E` 尚未出现于 lore.kernel.org / kernel.org / bugzilla / Patchew 的公开提交记录**——已联系内核维护者沟通本机修复，但该提交仍未在公开水道检索到（可能在评审中/未外发，或尚未合入）。下游合入前，本机以**方案1 DSDT Override** 作为已部署的持久修复。
+
+**建议**：若已向维护者发出补丁/邮件，可记录邮件 Thread-id 或提醒补丁编号；合并后在此标注 commit hash 与内核版本号。
 
 ## Fn 功能键修复
 
@@ -83,6 +87,10 @@ sudo systemctl restart acpid
 - [内核 ACPI Override 文档](https://docs.kernel.org/admin-guide/acpi/initrd_table_override.html)
 - [社区案例](https://www.cnblogs.com/kyanch/p/19031252)
 - [内核补丁历史](https://lore.kernel.org/all/b84edc24-0a3a-a4d2-6481-fb3d4cee6dda@amd.com/T/)
+- **GM5HG0A 上游参照**：
+  - [kernel Bugzilla 219614 — IRQ1 override / GM5HG0A](https://bugzilla.kernel.org/show_bug.cgi?id=219614)
+  - [Patchew — [PATCH] ACPI: resource: Do IRQ override on MECHREVO Yilong15 Series GM5HG0A](https://patchew.org/linux/198DF8EDEF8996EE+20240526091125.43899-1-nova@bupt.edu.cn/)
+  - [ACPI: resource: Add TongFang GM5HG0A to irq1_edge_low_force_override[] (commit be1e47be9eb437f2…)](https://www.opennet.me/kernel/6.12.10.html)
 
 ---
 
