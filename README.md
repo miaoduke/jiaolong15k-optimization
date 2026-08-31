@@ -181,6 +181,16 @@ sudo python3 jcc.py            # 控制中心入口（GTK）
 
 ## 🖥️ Windows 侧：自制控制台
 
+> **English (Windows)** — The current working code lives in `02_代码_Windows/现役_v6.0/`. Core modules:
+> - `mr_powersaver.py` — lightweight AC/DC manager (refresh rate + power plan), auto-start, **no MQTT dependency** (recommended to try first).
+> - `mr_daemon.py` — core engine: MQTT + UDP 13690 scene switching.
+> - `mr_console.py` — MQTT protocol wrapper.
+> - `mr_ec_hw.py` — EC hardware read/write (requires `UWACPIDriver.sys`).
+> - `mr_win_ctrl.py` — power plan / refresh rate / process control.
+> - `mr_gui_v6.py` / `mr_gui_v6qt.py` — two GUIs.
+>
+> Auto-start chain: `Startup\mr_powersaver.vbs` (**must be GBK-encoded**) → `pythonw mr_powersaver.py` → AC: 165 Hz + "MR-均衡"; DC: 60 Hz + "MR-超级省电". Reinstall the OS? Use `02_代码_Windows/恢复方案_系统重装/install.py` for one-click restore.
+
 `02_代码_Windows/现役_v6.0/` 为当前工作区。
 
 ```
@@ -215,6 +225,8 @@ mr_gui_v6.py / mr_gui_v6qt.py   双 GUI
 ---
 
 ## 🐧 Linux 侧
+
+> **English (Linux)** — Under `03_代码_Linux/`: `jcc_console_v2.3/` (GTK control center, entry `jcc.py`), `脚本_三档与温控/` (A/B/C scene scripts + thermal-wall guard, e.g. `apply_mode.sh`, `readjust.py`), `固件修复_键盘/` (DSDT override to fix PS2 keyboard IRQ polarity). No Windows-specific kernel driver needed, but root is required.
 
 `03_代码_Linux/`：`jcc_console_v2.3/`（GTK 控制中心）、`脚本_三档与温控/`（A/B/C 三场景 + 温度墙守护）、
 `固件修复_键盘/`（DSDT override 修复 PS2 键盘 IRQ 极性）。
@@ -254,15 +266,16 @@ mr_gui_v6.py / mr_gui_v6qt.py   双 GUI
 
 ---
 
-## 🐛 已知问题
+## 🐛 已知问题（Known Issues / Open Items）
 
-- L1 电源滑块 overlay **AC/DC 方向装反**（AC 挂省电、DC 挂高性能），尚未修复
-- MQTT broker 监听 `0.0.0.0:13688`（非仅回环），明文认证 —— 建议防火墙阻断入站
-- `smu_profile.json` 越界警告**已失效**（2026-08-30 修订）：当前四档最大 `fast=100000`（100W）均 ≤ 硬件 FAST 上限，可直接启用。真正的越界仅出现于抓包中厂商原生读数 `Fan/Status: CPU_PL1=120 / PL2=150 / PL4=200`（超出其自身 `Maximum 80/80/100`）——属厂商侧口径问题，非本仓库配置
-- GPU 温度寄存器 `0x44C` 存在一次反向证据（读数 22°C 低于环境温），待三方仲裁
-- Linux 侧文档尚未同步部分 Windows 侧纠错（0x44F→0x44C、45W→35W）
+> 状态图标：🟥 待修 · 🟨 待观察/第三方 · 🟩 已解决但有影响/需知悉。`[x]`=已在仓库层面关闭或注明；`[ ]`=仍开放。详细依据见 `00_结论_已确证/电源模式联动审计_20260826.md` 与 `本机生态当前状态_20260828.md`。
 
-详见 `00_结论_已确证/电源模式联动审计_20260826.md` 与 `本机生态当前状态_20260828.md`。
+- [x] **`smu_profile.json` 越界警告已失效**（🟩 已解决·2026-08-30 修订）— 当前四档最大 `fast=100000`（100W）均 ≤ 硬件 FAST 上限，可直接启用。真正的越界仅出现于抓包中厂商原生读数 `Fan/Status: CPU_PL1=120 / PL2=150 / PL4=200`（超出其自身 `Maximum 80/80/100`）——属厂商侧口径问题，非本仓库配置。
+- [ ] **L1 电源滑块 overlay AC/DC 方向装反**（🟥 待修）— AC 挂省电、DC 挂高性能。影响：UI 档位与实际电源计划相反。范围：Windows `mr_gui_v6` overlay。
+- [ ] **MQTT broker 监听 `0.0.0.0:13688`（非仅回环）+ 明文认证**（🟨 安全建议）— 建议防火墙阻断该端口入站；不影响本机回环使用。
+- [ ] **GPU 温度寄存器 `0x44C` 存在一次反向证据**（🟨 待仲裁）— 读数 22°C 低于环境温，需第三方复测仲裁。
+- [ ] **Linux 侧文档未同步 Windows 侧纠错**（🟨 文档）— `0x44F→0x44C`、`45W→35W` 等纠错未回写到 Linux 相关文档。
+- [x] **README 02 层文件计数错误**（🟩 已修正·2026-08-31）— 原声称 214，实为 212，已修正且与 `git ls-files` 对齐。
 
 ---
 
