@@ -213,6 +213,22 @@ mr_gui_v6.py / mr_gui_v6qt.py   双 GUI | two GUIs
 >
 > ⚠️ **readjustService.ps1（第三方持久化服务）— 保持停用**：`现役_v6.0/ryzenadj/readjustService.ps1` 是 Falco 开源的第三方 ryzenadj「监控保持」脚本（LGPL），其中 `46W/25W` 等为作者示例值，**与 smu_profile.json 档位无关**。它「盯守 fast_limit 防被改回」的职责与 mr_daemon 自带的 `plan_watcher` 重叠，两者同时启用会互相覆盖。**不建议作为自启项启用**（2026-08-30 穷尽审计注记）。
 
+### 🎮 About the Official Control Center (GamingCenter3 / ControlCenter) / 关于官方电竞控制台
+
+**English:** The vendor console is a **3-stack service chain** — UWP front-end `GamingCenter3_Cross.exe` → MQTT → tray `SystrayComponent.exe` → service `GCUService.exe` (via `GCUBridge`) → `ACPIDriverDll` → `UWACPIDriver.sys` → EC. Hands-on findings:
+
+- **Charge-threshold control is ineffective / 充电阈值控制无效** — its battery % register (`0x7B9`/`0x7D0`) writes persist & read back, but the EC firmware does **not** enforce them; the battery still charges to 100% (real charge current 9–11 W; see `00_结论_已确证/充电限制与调优_最终结论_20260826.md`).
+- **The three "battery modes" are ineffective / 三种电池模式无效** — they are just performance-policy aliases (LONG-LIFE/BALANCED/PROFESSIONAL = `HEALTHYMODE/BALANCEDMODE/PERFORMANCEMODE`), they only touch performance-side registers, **not** the charger.
+- **Background interference vs. power-saving / 省电下的后台干扰** — the GCU stack keeps writing performance-side EC registers in the background (a "multiple-writer"). When you are on battery and trying to save power, its on-going writes can collide with / override third-party power-saving (ryzenadj / TLP / `powercfg`) and keep the CPU pushed far out of idle, so your battery-life settings may not take effect. Recommended: **on battery, fully close the official stack (stop service + kill its 3 processes**) to let power-saving actually work — as recorded in `04_过程_文档归档/升级与改进提案_20260825.md` (S1: `net stop GCUBridge` + kill `GCUService.exe` / `GamingCenter3_Cross.exe` / `SystrayComponent.exe`).
+
+**中文：** 官方电竞控制台是一条**三层服务链**：UWP 前端 `GamingCenter3_Cross.exe` → MQTT → 托盘 `SystrayComponent.exe` → 服务 `GCUService.exe`（经 `GCUBridge`）→ `ACPIDriverDll` → `UWACPIDriver.sys` → EC。实测结论：
+
+- **充电阈值控制无效** — 其电池充电寄存器（`0x7B9`/`0x7D0`）写入持久、读回一致，但 EC 固件**不执行**，电池仍充到 100%（真实充电电流 9–11W；见 `00_结论_已确证/充电限制与调优_最终结论_20260826.md`）。
+- **三种电池模式无效** — 它们只是性能策略花名（长效/平衡/工作站 = `HEALTHYMODE/BALANCEDMODE/PERFORMANCEMODE`），只改性能侧寄存器，**不控制充电**。
+- **省电下的后台干扰** — GCU 官方栈会在后台持续写入 EC 性能侧寄存器（属于「多写者」）。当你在离电/省电状态下试图省电时，它的持续写入会与第三方省电方案（ryzenadj / TLP / `powercfg`）碰撞/覆盖，把 CPU 推出深度 idle，导致省电设置不生效。**建议在离电模式下彻底关闭官方栈（停服务 + 结束其 3 个进程）**，让省电真正生效——关闭命令见 `04_过程_文档归档/升级与改进提案_20260825.md`（S1：`net stop GCUBridge` + 结束 `GCUService.exe` / `GamingCenter3_Cross.exe` / `SystrayComponent.exe`）。仓库的自研控制台（`现役_v6.0/`）正是按此设计替代官方栈。
+
+> ⚠️ **On the old "console on = 41 W / off = 9 W" figure / 关于旧「开控制台=41W/关=9W」数字：** That figure came from an early mis-reading of `0x7A6` as a live-power register. Hardware arbitration on 2026-08-30 **retracted** it — `0x7A6` is a **writable flag bit, not a power sensor** (see EC table above). The high-power-when-open claim should thus be read **qualitatively** (background writes fight your power-saving), not as that exact W number. 该数字源于早期把 `0x7A6` 误读为实时功耗。2026-08-30 实机仲裁已**撤回**——`0x7A6` 是**可写标志位、非功率传感器**（见上文 EC 表）。故「开控制台功耗高」应作**定性**理解（后台写入与省电设置对抗），而非引用那组精确瓦数。
+
 ### ⚙️ SMU Power Tiers (`smu_profile.json`, tested values) / SMU 功耗档位（实测值）
 
 **English:** Current four tiers (unit mW; `ryzenadj` converts `fast/slow/stapm` to W on write): 当前四档配置（值单位 mW）。

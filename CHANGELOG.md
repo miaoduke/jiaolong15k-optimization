@@ -2,6 +2,13 @@
 
 格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，语义化版本见各子模块（`现役_v6.0` / `jcc_console_v2.3`）。
 
+## [未发布 / 2026-09-01]
+
+### Changed（文档 / 合规）
+- 同步 GM5BG0E 键盘 IRQ 上游补丁状态（`03_代码_Linux/固件修复_键盘/README.md`）。
+- README 新增《关于官方电竞控制台》双语说明：三层服务链（三进程）、充电阈值控制无效、三种电池模式无效（性能策略花名）、省电下后台干扰与第三方省电冲突、建议离电模式彻底关闭官方栈；并对旧「开控制台=41W/关=9W」数字标注 0x7A6 已仲裁撤回、仅作定性理解。
+- README 双系统对比表 / Key Conclusions / Known Issues 更新充电限流为「Linux 实测生效、Windows 固件不执行」。
+
 ## [未发布 / 2026-08-31]
 
 ### Changed（文档 / 合规）
