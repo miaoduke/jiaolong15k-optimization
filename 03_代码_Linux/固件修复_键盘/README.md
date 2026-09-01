@@ -35,11 +35,18 @@ grep ' 1:' /proc/interrupts  # 按键后计数应增加
 
 **原理**：在内核 `drivers/acpi/resource.c` 的 `irq1_edge_low_force_override[]` 添加 GM5BG0E。
 
-**状态（2026-08-31 如实记录）**：
+**状态（2026-09-01 更新）**：
 - 同平台 **GM5HG0A** 已进表并有公开 upstream 历史（见下方参考：Bug 219614 / Patchew / commit `be1e47be9eb4`），处理方式可完全复用。
-- 截至检索日，**`GM5BG0E` 尚未出现于 lore.kernel.org / kernel.org / bugzilla / Patchew 的公开提交记录**——已联系内核维护者沟通本机修复，但该提交仍未在公开水道检索到（可能在评审中/未外发，或尚未合入）。下游合入前，本机以**方案1 DSDT Override** 作为已部署的持久修复。
+- **2026-08-27 已正式提交上游补丁**，主题：`[PATCH v2] ACPI: resource: Add MECHREVO GM5BG0E to irq1_edge_low_force_override[]`。
+  - 提交通道：`linux-acpi@vger.kernel.org` + 抄送 `stable@vger.kernel.org`
+  - 维护者：Hans de Goede `<hansg@kernel.org>`；评审对象 Rafael Wysocki `<rafael.j.wysocki@intel.com>`
+  - 经历版本：v1（早期用昵称 Hackdale 署名）→ **Greg KH 回信要求 "Real name please."** → 改为真名 **DUAN Xuejian（段雪健）** 后发出 v1' 与 **v2**
+  - v2 线程 Message-ID：`<tencent_262C335D5C0549C6ED9EA88FF00437B26708@qq.com>`
+  - 检索可见：`https://lore.kernel.org/linux-acpi/?q=MECHREVO+GM5BG0E`
+- **合入状态（截至 2026-09-01）**：主线 `drivers/acpi/resource.c` **尚未**包含 GM5BG0E，lore 的 v2 线程仍为 **no followups**，等待维护者评审。合并后请在此回填 commit hash 与内核版本号。
+- 下游合入前，本机以**方案1 DSDT Override** 作为已部署的持久修复。
 
-**建议**：若已向维护者发出补丁/邮件，可记录邮件 Thread-id 或提醒补丁编号；合并后在此标注 commit hash 与内核版本号。
+**建议**：lore 无跟进时可礼貌邮件跟催 Rafael Wysocki 询 v2 是否在排队；维护者 Ack/Applied 后在此标注 commit hash 与内核版本号。
 
 ## Fn 功能键修复
 

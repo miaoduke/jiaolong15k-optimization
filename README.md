@@ -103,7 +103,7 @@ This repository follows a "**publish conclusions & methodology, not cracking pro
 |------|------|
 | CPU undervolt 降压 | ⛔ **locked by SMU firmware** (`ryzenadj` rejected on all three channels, both OSes) ⛔ **SMU 固件锁死**（`ryzenadj` 三通道均 rejected，双系统一致） |
 | GPU undervolt 降压 | only via MSI Afterburner manual VF curve; vBIOS power cap locked at 115 W 唯一途径 = MSI Afterburner VF 曲线手动；vBIOS 功耗墙 115W 锁死 |
-| Charge limit 充电限制 | ⚠️ **writes persist & read back on Windows, but firmware does not enforce it** (still charges to 100%). `0x7B9`/`0x7D0` read back the *threshold*, not SoC ⚠️ **Windows 侧写入持久、读回一致，但固件不执行**（实测仍充至 100%）。阈值寄存器回读的是**阈值**而非 SoC |
+| Charge limit 充电限制 | ✅ **Linux (2026-09-01) works — kernel-native sysfs `charge_control_end_threshold` (→ EC `0x7B9`) stops charging at the set % (hardware-verified).** ⚠️ **Windows still does NOT enforce it** — writes persist & read back but battery keeps charging to 100%. Linux 内核原生 sysfs `charge_control_end_threshold`（对应 EC `0x7B9`）**实测生效**，电量到设定 % 后停止充电；Windows 固件仍**不执行**（写入持久、读回一致，但电池仍充至 100%） |
 | SMU power limits 功耗墙 | ✅ `stapm`/`fast-limit`/`slow-limit`/`tctl-temp` writable; defaults STAPM 80 W / FAST 100 W / Tctl 99°C; `stapm`/`fast-limit`/`slow-limit`/`tctl-temp` 可写；默认 STAPM 80W / FAST 100W / Tctl 99°C |
 | Fan 风扇 | ✅ official MQTT `SET_FAN_SPEED_CURVE_SETTING` writes a 16-point curve (firmware-enforced) 官方 MQTT `SET_FAN_SPEED_CURVE_SETTING` 可写 16 点曲线（固件执行） |
 | Keyboard backlight 键盘背光 | ✅ 3 levels, EC `0x78C` bits 5–7 三档，EC `0x78C` bit5-7 |
@@ -138,7 +138,7 @@ This repository follows a "**publish conclusions & methodology, not cracking pro
 | Fan curve (16-point) 风扇曲线 | ✅ | ✅ | Win via official MQTT `SET_FAN_SPEED_CURVE_SETTING`; Linux writes EC directly Windows 走官方 MQTT；Linux 直接写 EC |
 | Fan duty / temperature read 风扇 duty/温度读取 | ✅ | ✅ | Same EC registers (`0x43E`/`0x44C`/`0x461`/`0x469`) 同为 EC 寄存器 |
 | Keyboard backlight (3 levels) 键盘背光 | ✅ | ✅ | EC `0x78C` bits 5-7, writable on both 两平台均可写 |
-| Charge threshold 充电阈值 | ⚠️ | ⚠️ | Firmware not implemented; writes persist in software but not enforced (both disproven) 固件不实现，软件层写持久但硬件不生效（都证伪） |
+| Charge threshold 充电阈值 | ⚠️ | ✅ | **Linux: works — kernel-native sysfs `charge_control_end_threshold` (→ EC `0x7B9`) actually stops charging at the set % (verified on hardware). Windows: firmware still does NOT enforce it — writes persist & read back but battery keeps charging to 100%.** Linux：内核原生 sysfs `charge_control_end_threshold`（对应 EC `0x7B9`）**实测生效**，电量到设定 % 后停止充电；Windows：固件仍**不执行**——写入持久、读回一致，但电池仍充到 100% |
 | Refresh-rate switch (165/60 Hz) 刷新率切换 | ✅ | — | Win: `mr_powersaver` auto AC/DC; Linux has no ready solution Windows：自动 AC/DC 切换；Linux 无此现成方案 |
 | Power plan / AC-DC auto switch 电源计划/AC-DC 场景 | ✅ | ⚠️ manual | Win: `mr_daemon`+`mr_powersaver` fully automatic; Linux: manual shell scripts Windows：全自动；Linux：shell 脚本手动 |
 | Official protocol (MQTT/UDP scenes) 官方协议 | ✅ | n/a | Win console implements it fully; Linux talks to EC directly, not via MQTT Windows 控制台完整实现；Linux 直接用 EC，不经 MQTT |
@@ -236,6 +236,8 @@ mr_gui_v6.py / mr_gui_v6qt.py   双 GUI | two GUIs
 >
 > **中文：** `03_代码_Linux/`：`jcc_console_v2.3/`（GTK 控制中心）、`脚本_三档与温控/`（A/B/C 三场景 + 温度墙守护）、`固件修复_键盘/`（DSDT override 修复 PS2 键盘 IRQ 极性）。
 
+> **🔋 Charge limit (works on Linux) / 🔋 充电限流（Linux 生效）:** Unlike Windows, the Linux side can actually cap charging via the kernel-native sysfs interface — `echo <1-100> | sudo tee /sys/class/power_supply/BAT0/charge_control_end_threshold` (maps to EC `0x7B9`, no direct EC access needed). Ready-made tools: `jcc_console_v2.3/charge_limit.sh` (`set <1-100> | reset | status`) and `charge_tool.py` (Python, with simulated/test mode). Battery stops charging at the set %. Note: Windows does not enforce this (see Dual-OS table & Known Issues). / 与 Windows 不同，Linux 侧可通过内核原生 sysfs 真正限制充电：`echo <1-100> | sudo tee /sys/class/power_supply/BAT0/charge_control_end_threshold`（对应 EC `0x7B9`，无需直接操作 EC）。现成工具：`jcc_console_v2.3/charge_limit.sh`（`set <1-100> | reset | status`）与 `charge_tool.py`（Python，含模拟/测试模式）。电量到设定 % 后停止充电。注意：Windows 侧不生效（见双系统对比表与已知问题）。
+
 ---
 
 ## 🔒 Unpublished Content 未公开内容（重要）
@@ -285,6 +287,7 @@ The password **composition rules** are in `01_协议_逆向成果/MQTT协议/协
 - [ ] **GPU temperature register `0x44C` has one counter-evidence** (GPU 温度寄存器 `0x44C` 一次反向证据) — 🟨 to arbitrate. A 22°C reading below ambient; needs third-party re-test. / 读数 22°C 低于环境温，需第三方复测仲裁。
 - [ ] **Linux docs not synced with Windows-side corrections** (Linux 侧文档未同步 Windows 侧纠错) — 🟨 docs. Corrections like `0x44F→0x44C`, `45W→35W` not written back to Linux docs. / `0x44F→0x44C`、`45W→35W` 等纠错未回写到 Linux 相关文档。
 - [x] **README layer-02 file count fixed** (README 02 层文件计数错误) — 🟩 2026-08-31. Was 214, actually 212; aligned with `git ls-files`. / 原声称 214，实为 212，已修正。
+- [x] **Charge limit re-verified on Linux — now WORKS (Windows still NOT enforced)** (充电限制 Linux 复测生效，Windows 仍不执行) — 🟩 2026-09-01. Earlier "both-OS disproved" (2026-08-26) covered the Windows bare-IO/ACPI/GCU channels only. Re-test on Linux shows the **kernel-native sysfs `charge_control_end_threshold` (→ EC `0x7B9`) actually stops charging** at the set %. Old conclusion retained: Windows firmware does NOT enforce it (writes persist & read back, battery still charges to 100%). Tools: `03_代码_Linux/jcc_console_v2.3/charge_limit.sh`, `03_代码_Linux/charge_tool.py`. / 早先「双平台证伪」（2026-08-26）仅覆盖 Windows 裸IO/ACPI/GCU 三通道。Linux 复测表明**内核原生 sysfs `charge_control_end_threshold`（对应 EC `0x7B9`）实测生效**，电量到设定 % 即停止充电。旧结论保留：Windows 固件仍不执行（写入持久、读回一致，仍充至 100%）。工具：`03_代码_Linux/jcc_console_v2.3/charge_limit.sh`、`03_代码_Linux/charge_tool.py`。
 
 ---
 
